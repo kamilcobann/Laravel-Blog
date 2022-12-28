@@ -5,9 +5,11 @@
                     @foreach ($articles as $article)
                     <!-- Post preview-->
                     <div class="post-preview">
-                        <a href="post.html">
-                            <h2 class="post-title">{{$article->title}}</h2>
-                            <h3 class="post-subtitle">{{str_limit($article->content,75,)}}</h3>
+                        <a href="{{route('single',[$article->getCategory->slug,$article->slug])}}">
+                            <h2 class="post-title">{!!$article->title!!}</h2>
+                            
+                        <img src="{{$article->image}}" alt="">
+                            <h3 class="post-subtitle">{!!str_limit($article->content,75,)!!}</h3>
                         </a>
                         <p class="post-meta">Kategori :
                             <a href="#!">{{$article->getCategory->name}}</a>
