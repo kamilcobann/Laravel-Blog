@@ -31,4 +31,13 @@ class Homepage extends Controller
         $data['categories'] = Category::inRandomOrder()->get();
         return view('front.single',$data);
     }
+
+    public function category($slug)
+    {
+        $category = Category::whereSlug($slug)->first() ?? abort(403,"Category doesn't exist");
+        $data['category'] = $category;
+        $data['categories'] = Category::inRandomOrder()->get();
+        $data['articles'] = Article::where('category_id',$category->id)->orderBy('created_at','DESC')->get();
+        return view('front.category',$data);
+    }
 }
