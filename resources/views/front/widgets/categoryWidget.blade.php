@@ -12,7 +12,7 @@
                 <a @if(Request::segment(2)!=$category->slug) href="{{route('category',$category->slug)}}"@endif>{{$category->name}} </a><span class="badge bg-danger float-end">{{$category->articleCount()}}</span>
             </li>
             @endforeach
-
+            
         </div>
     </div>
     
