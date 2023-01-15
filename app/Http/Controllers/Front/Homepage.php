@@ -7,17 +7,21 @@ use Illuminate\Http\Request;
 
 use App\Models\Category;
 use App\Models\Article;
-
+use App\Models\Page;
 
 class Homepage extends Controller
 {
+
+    public function __construct(){
+        view()->share('pages',Page::orderBy('order')->get());
+        view()->share('categories',Category::inRandomOrder()->get());
+    }
     //
     public function index(){
         
         $data['articles'] = Article::orderBy('created_at','DESC')->paginate(2);
         $data['articles']->withPath(url('sayfa'));
         $data['categories'] = Category::inRandomOrder()->get();
-        
         return view('front.homepage',$data);
     }
 
@@ -29,7 +33,6 @@ class Homepage extends Controller
 
 
         $data['article'] = $article;
-        $data['categories'] = Category::inRandomOrder()->get();
         return view('front.single',$data);
     }
 
@@ -38,7 +41,12 @@ class Homepage extends Controller
         $category = Category::whereSlug($slug)->first() ?? abort(403,"Category doesn't exist");
         $data['category'] = $category;
         $data['articles'] = Article::where('category_id',$category->id)->orderBy('created_at','DESC')->paginate(1);
-        $data['categories'] = Category::inRandomOrder()->get();
         return view('front.category',$data);
+    }
+
+    public function page($slug){
+        $page = Page::whereSlug($slug)->first() ?? abort(403,"Page Not Found");
+        $data['page'] = $page;
+        return view('front.page',$data);
     }
 }
