@@ -20,6 +20,7 @@ class AuthController extends Controller
             'email'=>$request->email,
             'password'=>$request->password
         ])){
+            toastr()->success('Hoş Geldiniz', Auth::user()->name);
             return redirect()->route('admin.dashboard');
         }
         return redirect()->route('admin.login')->withErrors('Giriş bilgileri yanlış');

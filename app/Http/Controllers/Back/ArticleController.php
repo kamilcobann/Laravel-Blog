@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Category;
 
 class ArticleController extends Controller
 {
@@ -27,6 +28,8 @@ class ArticleController extends Controller
     public function create()
     {
         //
+        $categories = Category::all();
+        return view('back.articles.create',compact('categories'));
     }
 
     /**
@@ -37,7 +40,26 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'min:3',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
+
+        ]);
+        $article = new Article;
+
+        $article->title = $request->title;
+        $article->category_id = $request->category;
+        $article->content = $request->content;
+        $article->slug = str_slug($request->title);
+
+        if($request->hasFile('image')){
+            $image_name = str_slug($request->title).'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('uploads'),$image_name);
+            $article->image = 'uploads/'.$image_name;
+        }
+        $article->save();
+        toastr()->success('Başarılı','Makale başarıyla oluşturuldu');
+        return redirect()->route('admin.articles.index');
     }
 
     /**
