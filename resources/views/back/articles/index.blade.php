@@ -30,12 +30,15 @@
                                             <td>{{$article->getCategory->name}}</td>
                                             <td>{{$article->hit}}</td>
                                             <td>{{$article->created_at->diffForHumans()}}</td>
-                                            <td> <span class ={!!$article->status==0 ? "'text-danger'>Pasif" : "'text-success'>Aktif" !!}</span></td>
+                                            <td> 
+                                            <input class="switch" article-id="{{$article->id}}"  type="checkbox" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger" @if($article->status==1) checked @endif data-toggle="toggle">
+
+                                            </td>
                                             <td>
                                                 <a href="#" title="Görüntüle" class="btn btn-sm btn-success">
                                                     <i class="fa-eye fa"></i>
                                                 </a>
-                                                <a href="#" title="Düzenle" class="btn btn-sm btn-primary">
+                                                <a href="{{route('admin.articles.edit',$article->id)}}" title="Düzenle" class="btn btn-sm btn-primary">
                                                 <i class="fa-pen fa"></i>
                                                 </a>
                                                 <a href="#" title="Sil" class="btn btn-sm btn-danger">
@@ -52,4 +55,21 @@
                         </div>
                     </div>
 
+@endsection
+@section('css')
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+@endsection
+@section('js')
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script>
+    $(function () {
+        $('.switch').change(function () {
+            id = $(this)[0].getAttribute('article-id');
+            statu = $(this).prop('checked');
+            $.get("{{route('admin.switch')}}",{id:id,statu,statu},function (data,status) {
+                console.log(data);
+            })
+        })
+    })
+</script>
 @endsection

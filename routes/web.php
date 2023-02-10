@@ -15,6 +15,7 @@ Route::prefix('admin')->name('admin.')->middleware('isLogin')->group(function(){
 Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function(){
     Route::get('panel','App\Http\Controllers\Back\Dashboard@index')->name('dashboard');
     Route::resource('articles','App\Http\Controllers\Back\ArticleController');
+    Route::get('/switch','App\Http\Controllers\Back\ArticleController@switch')->name('switch');
     Route::get('logout','App\Http\Controllers\Back\AuthController@logout')->name('logout');
 });
 
