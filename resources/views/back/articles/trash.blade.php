@@ -7,7 +7,7 @@
                             <h6 class="m-0 font-weight-bold text-primary"><strong>{{$articles->count()}} makale bulundu</strong>
                         
                             <span class="mx-1">
-                                <a href="{{route('admin.trash')}}" class="btn btn-warning btn-sm"><i class="fa fa-trash mx-1"></i>Silinen Makaleler</a>
+                                <a href="{{route('admin.articles.index')}}" class="btn btn-success btn-sm"><i class="fa fa-file mx-1"></i>Aktif Makaleler</a>
                             </span>
                         </h6>
                         </div>
@@ -21,7 +21,6 @@
                                             <th>Kategori</th>
                                             <th>Hit</th>
                                             <th>Oluş. Tarihi</th>
-                                            <th>Durum</th>
                                             <th>İşlemler</th>
                                         </tr>
                                     </thead>
@@ -35,18 +34,13 @@
                                             <td>{{$article->getCategory->name}}</td>
                                             <td>{{$article->hit}}</td>
                                             <td>{{$article->created_at->diffForHumans()}}</td>
-                                            <td> 
-                                            <input class="switch" article-id="{{$article->id}}"  type="checkbox" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger" @if($article->status==1) checked @endif data-toggle="toggle">
-
-                                            </td>
                                             <td>
-                                                <a target="_blank" href="{{route('single',[$article->getCategory->slug,$article->slug])}}" title="Görüntüle" class="btn btn-sm btn-success">
-                                                    <i class="fa-eye fa"></i>
+
+                                            <a href="{{route('admin.recycle',$article->id)}}" title="Silmekten Kurtar" class="btn btn-sm btn-primary">
+                                                <i class="fa-recycle fa"></i>
                                                 </a>
-                                                <a href="{{route('admin.articles.edit',$article->id)}}" title="Düzenle" class="btn btn-sm btn-primary">
-                                                <i class="fa-pen fa"></i>
-                                                </a>
-                                                <a href="{{route('admin.delete',$article->id)}}" title="Sil" class="btn btn-sm btn-danger">
+
+                                                <a href="{{route('admin.hard-delete',$article->id)}}" title="Sil" class="btn btn-sm btn-danger">
                                                 <i class="fa-times fa"></i>
                                                 </a>
                                             </td>
@@ -60,21 +54,4 @@
                         </div>
                     </div>
 
-@endsection
-@section('css')
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-@endsection
-@section('js')
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-<script>
-    $(function () {
-        $('.switch').change(function () {
-            id = $(this)[0].getAttribute('article-id');
-            statu = $(this).prop('checked');
-            $.get("{{route('admin.switch')}}",{id:id,statu,statu},function (data,status) {
-                console.log(data);
-            })
-        })
-    })
-</script>
 @endsection

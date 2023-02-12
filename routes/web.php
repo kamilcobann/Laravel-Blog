@@ -14,8 +14,21 @@ Route::prefix('admin')->name('admin.')->middleware('isLogin')->group(function(){
 });
 Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function(){
     Route::get('panel','App\Http\Controllers\Back\Dashboard@index')->name('dashboard');
+
+    // MAKALE ROUTE
     Route::resource('articles','App\Http\Controllers\Back\ArticleController');
     Route::get('/switch','App\Http\Controllers\Back\ArticleController@switch')->name('switch');
+    Route::get('/delete/{id}','App\Http\Controllers\Back\ArticleController@delete')->name('delete');
+    Route::get('/hardDelete/{id}','App\Http\Controllers\Back\ArticleController@hardDelete')->name('hard-delete');
+    Route::get('/deleted-articles','App\Http\Controllers\Back\ArticleController@trash')->name('trash');
+    Route::get('/recycle/{id}','App\Http\Controllers\Back\ArticleController@recycle')->name('recycle');
+
+    //KATEGORİ ROUTE
+
+    Route::get('/categories','App\Http\Controllers\Back\CategoryController@index')->name('category.index');
+    Route::get('/category/status','App\Http\Controllers\Back\CategoryController@switch')->name('category.switch');
+    Route::post('/categories','App\Http\Controllers\Back\CategoryController@create')->name('category.create');
+    
     Route::get('logout','App\Http\Controllers\Back\AuthController@logout')->name('logout');
 });
 

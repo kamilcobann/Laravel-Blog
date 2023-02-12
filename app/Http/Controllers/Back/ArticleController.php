@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Category;
-
+use File;
 class ArticleController extends Controller
 {
     /**
@@ -129,10 +129,45 @@ class ArticleController extends Controller
         //
     }
 
+    public function delete($id)
+    {
+        Article::find($id)->delete();
+        toastr()->success("Makale geri dönüşüme taşındı");
+        return redirect()->route('admin.articles.index');
+    }
+
     public function switch(Request $request)
     {
         $article = Article::findOrFail($request->id);
         $article->status = $request->statu=="true" ? 1 : 0;
         $article->save();
     }
+
+
+    public function trash()
+    {
+        $articles = Article::onlyTrashed()->orderBy('created_at','desc')->get();
+        return view('back.articles.trash',compact('articles'));
+    }
+
+
+    public function recycle($id)
+    {
+        Article::onlyTrashed()->find($id)->restore();
+        toastr()->success('Makale başarıyla geri döndürüldü.');
+        return redirect()->back();
+    }
+
+    public function hardDelete($id)
+    {
+        $article = Article::onlyTrashed()->find($id);
+        if(File::exists($article->image))
+        {
+            File::delete(public_path($article->image));
+        }
+        $article->forceDelete();
+        toastr()->success("Makale tamamen silindi");
+        return redirect()->back();
+    }
+
 }
