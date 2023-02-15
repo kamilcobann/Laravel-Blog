@@ -1,5 +1,5 @@
 @extends('back.layouts.master')
-@section('title','Makale Oluştur')
+@section('title',$page->title.' sayfasını güncelle')
 @section('content')
 
 <div class="card shadow mb-4">
@@ -7,9 +7,10 @@
                             <h6 class="m-0 font-weight-bold text-primary"></h6>
                         </div>
                         <div class="card-body">
-                           <form method="post" action="{{route('admin.articles.store')}}" enctype="multipart/form-data">
+                           <form method="post" action="{{route('admin.page.update',$page->id)}}" enctype="multipart/form-data">
+                               @method('PUT')
                             @csrf
-                            @if ($errors->count() > 0)
+                            @if ($errors)
                                 <div class="alert alert-danger">
                                     @foreach ($errors as $err)
                                         {{$err}}
@@ -17,30 +18,23 @@
                                 </div>
                             @endif
                             <div class="form-group">
-                                <label>Makale Başlığı</label>
-                                <input type="text" name="title" id="title" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Kategori</label>
-                                <select class="form-control" name="category" required id="category">
-                                    <option>Seçim Yapınız</option>
-                                    @foreach ($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
-                                    @endforeach
-                                </select>
+                                <label>Sayfa Başlığı</label>
+                                <input type="text" name="title" id="title" value="{{$page->title}}" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Fotoğraf</label>
+                                <br>
+                                <img src="{{asset($page->image)}}" width="300" class="rounded-2 img-thumbnail">
                                 <input type="file" name="image" id="image" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>İçerik</label>
-                                <textarea rows="4" name="content" id="editor" class="form-control" required></textarea>
+                                <textarea rows="4" name="content" id="editor" class="form-control" required>{{$page->content}}</textarea>
                             </div>
 
-                            
-                                <button type="submit" class="btn btn-primary btn-block">Makaleyi Oluştur</button>
-                            
+
+                                <button type="submit" class="btn btn-primary btn-block">Sayfayı Güncelle</button>
+
                            </form>
                         </div>
 </div>

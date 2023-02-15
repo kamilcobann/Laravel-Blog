@@ -1,5 +1,5 @@
 @extends('back.layouts.master')
-@section('title','Makale Oluştur')
+@section('title','Sayfa Oluştur')
 @section('content')
 
 <div class="card shadow mb-4">
@@ -7,7 +7,7 @@
                             <h6 class="m-0 font-weight-bold text-primary"></h6>
                         </div>
                         <div class="card-body">
-                           <form method="post" action="{{route('admin.articles.store')}}" enctype="multipart/form-data">
+                           <form method="post" action="{{route('admin.page.store')}}" enctype="multipart/form-data">
                             @csrf
                             @if ($errors->count() > 0)
                                 <div class="alert alert-danger">
@@ -17,17 +17,8 @@
                                 </div>
                             @endif
                             <div class="form-group">
-                                <label>Makale Başlığı</label>
+                                <label>Sayfa Başlığı</label>
                                 <input type="text" name="title" id="title" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Kategori</label>
-                                <select class="form-control" name="category" required id="category">
-                                    <option>Seçim Yapınız</option>
-                                    @foreach ($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
-                                    @endforeach
-                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Fotoğraf</label>
@@ -39,7 +30,7 @@
                             </div>
 
                             
-                                <button type="submit" class="btn btn-primary btn-block">Makaleyi Oluştur</button>
+                                <button type="submit" class="btn btn-primary btn-block">Sayfa Oluştur</button>
                             
                            </form>
                         </div>

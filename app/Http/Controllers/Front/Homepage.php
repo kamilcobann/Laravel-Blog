@@ -27,7 +27,7 @@ class Homepage extends Controller
 
     public function single($category,$slug)
     {
-        $category = Category::whereSlug($category)->first() ?? abort(403,"Category doesn't exist");
+        $category = Category::whereSlug($category)->first() ?? abort(403,"Cateaaagory doesn't exist");
         $article = Article::whereSlug($slug)->whereCategoryId($category->id)->first() ?? abort(403,"Article doesn't exist");
         $article->increment('hit');
 
@@ -38,7 +38,7 @@ class Homepage extends Controller
 
     public function category($slug)
     {
-        $category = Category::whereSlug($slug)->first() ?? abort(403,"Category doesn't exist");
+        $category = Category::whereSlug($slug)->first() ?? abort(403,"Category3333 doesn't exist");
         $data['category'] = $category;
         $data['articles'] = Article::where('category_id',$category->id)->orderBy('created_at','DESC')->paginate(1);
         return view('front.category',$data);
